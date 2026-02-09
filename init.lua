@@ -605,6 +605,15 @@ require('lazy').setup({
         -- ts_ls = {},
       }
 
+      vim.lsp.config('ty', {
+        cmd = { 'ty', 'server' },
+        filetypes = { 'python' },
+        root_dir = function(fname)
+          return vim.fs.root(fname, { 'pyproject.toml', '.git' }) or vim.loop.cwd()
+        end,
+      })
+      vim.lsp.enable 'ty'
+
       -- Ensure the servers and tools above are installed
       --
       -- To check the current status of installed tools and/or manually install
@@ -687,7 +696,7 @@ require('lazy').setup({
       formatters_by_ft = {
         lua = { 'stylua' },
         -- Conform can also run multiple formatters sequentially
-        -- python = { "isort", "black" },
+        python = { 'ruff' },
         --
         -- You can use 'stop_after_first' to run the first available formatter from the list
         -- javascript = { "prettierd", "prettier", stop_after_first = true },
@@ -851,14 +860,14 @@ require('lazy').setup({
 
   { -- Highlight, edit, and navigate code
     'nvim-treesitter/nvim-treesitter',
-    config = function()
+        config = function()
       local filetypes = { 'bash', 'c', 'diff', 'html', 'lua', 'luadoc', 'markdown', 'markdown_inline', 'query', 'vim', 'vimdoc', 'python', 'rust' }
       require('nvim-treesitter').install(filetypes)
       vim.api.nvim_create_autocmd('FileType', {
         pattern = filetypes,
         callback = function() vim.treesitter.start() end,
       })
-    end,
+    end,  
   },
 
   -- The following comments only work if you have downloaded the kickstart repo, not just copy pasted the
