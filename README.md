@@ -3,6 +3,7 @@
 ## Errors I encountered
 * Had to replace 'lua_ls' with 'lua-language-server'
 * Had to download a release of treesitter https://github.com/tree-sitter/tree-sitter/releases/tag/v0.26.5, clear all the ~/.local/state/nvim, ~/.local/share/nvim and ~/.cache/nvim/ folders before startin and added it to my /usr/local/bin; then TSInstall xyz
+* Ruff, Ty etc. needs to be installed locally using uv
 
 ## Introduction
 
