@@ -596,7 +596,7 @@ require('lazy').setup({
         -- clangd = {},
         -- gopls = {},
         -- pyright = {},
-        -- rust_analyzer = {},
+        rust_analyzer = {},
         --
         -- Some languages (like typescript) have entire language plugins that can be useful:
         --    https://github.com/pmizio/typescript-tools.nvim
@@ -614,6 +614,15 @@ require('lazy').setup({
       })
       vim.lsp.enable 'ty'
 
+      vim.lsp.config('ruff', {
+        cmd = { 'ruff', 'server' },
+        filetypes = { 'python' },
+        root_dir = function(fname)
+          return vim.fs.root(fname, { 'pyproject.toml', 'ruff.toml', '.ruff.toml', '.git' }) or vim.loop.cwd()
+        end,
+      })
+      vim.lsp.enable 'ruff'
+
       -- Ensure the servers and tools above are installed
       --
       -- To check the current status of installed tools and/or manually install
@@ -621,7 +630,14 @@ require('lazy').setup({
       --    :Mason
       --
       -- You can press `g?` for help in this menu.
-      local ensure_installed = vim.tbl_keys(servers or {})
+      local ensure_installed = {}
+      for name, _ in pairs(servers or {}) do
+        if name == 'rust_analyzer' then
+          table.insert(ensure_installed, 'rust-analyzer')
+        else
+          table.insert(ensure_installed, name)
+        end
+      end
       vim.list_extend(ensure_installed, {
         'lua-language-server', -- Lua Language server
         'stylua', -- Used to format Lua code
@@ -697,6 +713,7 @@ require('lazy').setup({
         lua = { 'stylua' },
         -- Conform can also run multiple formatters sequentially
         python = { 'ruff' },
+        rust = { 'rustfmt' },
         --
         -- You can use 'stop_after_first' to run the first available formatter from the list
         -- javascript = { "prettierd", "prettier", stop_after_first = true },
