@@ -17,43 +17,9 @@ return{
       'saghen/blink.cmp',
     },
     config = function()
-      -- Brief aside: **What is LSP?**
-      --
-      -- LSP is an initialism you've probably heard, but might not understand what it is.
-      --
-      -- LSP stands for Language Server Protocol. It's a protocol that helps editors
-      -- and language tooling communicate in a standardized fashion.
-      --
-      -- In general, you have a "server" which is some tool built to understand a particular
-      -- language (such as `gopls`, `lua-language-server`, `rust_analyzer`, etc.). These Language Servers
-      -- (sometimes called LSP servers, but that's kind of like ATM Machine) are standalone
-      -- processes that communicate with some "client" - in this case, Neovim!
-      --
-      -- LSP provides Neovim with features like:
-      --  - Go to definition
-      --  - Find references
-      --  - Autocompletion
-      --  - Symbol Search
-      --  - and more!
-      --
-      -- Thus, Language Servers are external tools that must be installed separately from
-      -- Neovim. This is where `mason` and related plugins come into play.
-      --
-      -- If you're wondering about lsp vs treesitter, you can check out the wonderfully
-      -- and elegantly composed help section, `:help lsp-vs-treesitter`
-
-      --  This function gets run when an LSP attaches to a particular buffer.
-      --    That is to say, every time a new file is opened that is associated with
-      --    an lsp (for example, opening `main.rs` is associated with `rust_analyzer`) this
-      --    function will be executed to configure the current buffer
       vim.api.nvim_create_autocmd('LspAttach', {
         group = vim.api.nvim_create_augroup('kickstart-lsp-attach', { clear = true }),
         callback = function(event)
-          -- NOTE: Remember that Lua is a real programming language, and as such it is possible
-          -- to define small helper and utility functions so you don't have to repeat yourself.
-          --
-          -- In this case, we create a function that lets us more easily define mappings specific
-          -- for LSP related items. It sets the mode, buffer and description for us each time.
           local map = function(keys, func, desc, mode)
             mode = mode or 'n'
             vim.keymap.set(mode, keys, func, { buffer = event.buf, desc = 'LSP: ' .. desc })
@@ -71,8 +37,6 @@ return{
           --  For example, in C this would take you to the header.
           map('grD', vim.lsp.buf.declaration, '[G]oto [D]eclaration')
 
-          -- The following two autocommands are used to highlight references of the
-          -- word under your cursor when your cursor rests there for a little while.
           --    See `:help CursorHold` for information about when this is executed
           --
           -- When you move your cursor, the highlights will be cleared (the second autocommand).
@@ -116,8 +80,7 @@ return{
       --  So, we create new capabilities with blink.cmp, and then broadcast that to the servers.
       local capabilities = require('blink.cmp').get_lsp_capabilities()
 
-      -- Enable the following language servers
-      --  Feel free to add/remove any LSPs that you want here. They will automatically be installed.
+      -- Enable the following language servers - will be automatically installed with mason and mason-tool-installer
       --  See `:help lsp-config` for information about keys and how to configure
       local servers = {
         -- clangd = {},
@@ -132,6 +95,8 @@ return{
         -- ts_ls = {},
       }
 
+      -- Python tools are installed via uv, not Mason. This keeps them tied to project envs.
+      -- Install with: `uv pip install ruff ty`
       vim.lsp.config('ty', {
         cmd = { 'ty', 'server' },
         filetypes = { 'python' },
@@ -140,7 +105,7 @@ return{
         end,
       })
       vim.lsp.enable 'ty'
-
+      -- Ruff provides linting + formatting; it also exposes an LSP server.
       vim.lsp.config('ruff', {
         cmd = { 'ruff', 'server' },
         filetypes = { 'python' },
@@ -157,17 +122,11 @@ return{
       --    :Mason
       --
       -- You can press `g?` for help in this menu.
-      local ensure_installed = {}
-      for name, _ in pairs(servers or {}) do
-        if name == 'rust_analyzer' then
-          table.insert(ensure_installed, 'rust-analyzer')
-        else
-          table.insert(ensure_installed, name)
-        end
-      end
+      local ensure_installed = vim.tbl_keys(servers or {})
       vim.list_extend(ensure_installed, {
         'lua-language-server', -- Lua Language server
         'stylua', -- Used to format Lua code
+        'rust-analyzer', -- Rust language server
         -- You can add other tools here that you want Mason to install
       })
 
@@ -237,12 +196,9 @@ return{
       end,
       formatters_by_ft = {
         lua = { 'stylua' },
-        -- Conform can also run multiple formatters sequentially
         python = { 'ruff' },
+        -- rustfmt is provided by rustup: `rustup component add rustfmt`
         rust = { 'rustfmt' },
-        --
-        -- You can use 'stop_after_first' to run the first available formatter from the list
-        -- javascript = { "prettierd", "prettier", stop_after_first = true },
       },
     },
   },
