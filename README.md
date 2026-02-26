@@ -1,4 +1,4 @@
-# kickstart.nvim
+# nvim-config
 
 ## Errors I encountered
 * Had to replace 'lua_ls' with 'lua-language-server'
