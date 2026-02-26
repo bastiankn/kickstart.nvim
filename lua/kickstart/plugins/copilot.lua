@@ -14,6 +14,14 @@ return {
       },
       auto_insert_mode = true, -- Enter insert mode when opening
     },
+    -- Float window config (for floating layout)
+    float_window = {
+      layout = 'float',
+      relative = 'editor',
+      width = 80,
+      height = 30,
+      border = 'rounded',
+    },
     keys = {
       -- Quick chat
       {
@@ -29,6 +37,25 @@ return {
       },
       -- Toggle chat window
       { '<leader>ct', '<cmd>CopilotChatToggle<cr>', desc = '[C]opilot Chat [T]oggle', mode = { 'n', 'v' } },
+      -- Toggle floating chat window
+      {
+        '<leader>c<space>',
+        function()
+          local width = math.floor(vim.o.columns * 0.8)
+          local height = math.floor(vim.o.lines * 0.8)
+          require('CopilotChat').toggle {
+            window = {
+              layout = 'float',
+              relative = 'editor',
+              width = width,
+              height = height,
+              border = 'rounded',
+            },
+          }
+        end,
+        desc = '[C]opilot Chat [F]loat window',
+        mode = { 'n', 'v' },
+      },
       -- Predefined prompts
       { '<leader>ce', '<cmd>CopilotChatExplain<cr>', desc = '[C]opilot [E]xplain code', mode = { 'n', 'v' } },
       { '<leader>cr', '<cmd>CopilotChatReview<cr>', desc = '[C]opilot [R]eview code', mode = { 'n', 'v' } },
