@@ -96,22 +96,25 @@ return{
       }
 
       -- Python tools are installed via uv, not Mason. This keeps them tied to project envs.
-      -- Install with: `uv pip install ruff ty`
       vim.lsp.config('ty', {
-        cmd = { 'ty', 'server' },
-        filetypes = { 'python' },
-        root_dir = function(fname)
-          return vim.fs.root(fname, { 'pyproject.toml', '.git' }) or vim.loop.cwd()
-        end,
+        settings = {
+          ty = {
+            -- ty language server settings go here
+          },
+        },
       })
       vim.lsp.enable 'ty'
       -- Ruff provides linting + formatting; it also exposes an LSP server.
       vim.lsp.config('ruff', {
-        cmd = { 'ruff', 'server' },
-        filetypes = { 'python' },
-        root_dir = function(fname)
-          return vim.fs.root(fname, { 'pyproject.toml', 'ruff.toml', '.ruff.toml', '.git' }) or vim.loop.cwd()
-        end,
+        init_options = {
+          settings = {
+            configurationPreference = 'filesystemFirst',
+            lineLength = 100,
+            format = {
+              docstringConvention = 'google',
+            },
+          },
+        },
       })
       vim.lsp.enable 'ruff'
 
