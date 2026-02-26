@@ -1,12 +1,29 @@
-tags
-test.sh
-.luarc.json
-nvim
+# ============================================
+# Neovim Configuration - .gitignore
+# ============================================
 
-spell/
+# Language Server and Development Tools
+# --------------------------------------
+.luarc.json                 # Lua language server config (auto-generated)
+tags                        # Ctags files for code navigation
 
-# You can uncomment this yourself if you want to lock the lazy-lock.json,
-# but for kickstart, it makes sense to leave it ignored.
+# Personal Scripts and Testing
+# --------------------------------------
+test.sh                     # Personal testing scripts
+
+# Plugin Management
+# --------------------------------------
+# Plugin lockfile - ignoring for kickstart template usage
+# NOTE: For personal configs, consider committing this to ensure
+# consistent plugin versions across different machines
 lazy-lock.json
 
-.DS_Store
+# Vim/Neovim Runtime Files
+# --------------------------------------
+spell/                      # Personal spell check dictionaries
+.session.vim                # Vim session files (workspace state)
+
+# Operating System Files
+# --------------------------------------
+.DS_Store                   # macOS Finder metadata
+
