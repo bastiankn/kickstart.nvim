@@ -4,7 +4,7 @@ This document describes all plugins configured in this Neovim setup, their purpo
 
 ## Core Functionality
 
-### 🔭 Telescope (`telescope.lua`)
+### Telescope (`telescope.lua`)
 **Plugin:** `nvim-telescope/telescope.nvim`
 
 Fuzzy finder for files, text, LSP symbols, and more. The primary way to search and navigate your workspace.
@@ -27,7 +27,7 @@ Fuzzy finder for files, text, LSP symbols, and more. The primary way to search a
 
 ---
 
-### 📝 LSP (`lsp.lua`)
+### LSP (`lsp.lua`)
 **Plugin:** `neovim/nvim-lspconfig` + `mason.nvim`
 
 Language Server Protocol configuration providing code intelligence features like go-to-definition, autocompletion, error checking, and more.
@@ -45,7 +45,7 @@ Language Server Protocol configuration providing code intelligence features like
 
 ---
 
-### ⌨️ Autocomplete (`autocomplete.lua`)
+### Autocomplete (`autocomplete.lua`)
 **Plugin:** `saghen/blink.cmp` + `L3MON4D3/LuaSnip`
 
 Intelligent autocompletion with snippet support.
@@ -66,7 +66,7 @@ Intelligent autocompletion with snippet support.
 
 ---
 
-### 🌳 Treesitter (`treesitter.lua`)
+### Treesitter (`treesitter.lua`)
 **Plugin:** `nvim-treesitter/nvim-treesitter`
 
 Advanced syntax highlighting and code parsing using tree-sitter parsers.
@@ -82,7 +82,7 @@ Advanced syntax highlighting and code parsing using tree-sitter parsers.
 
 ## Editor Enhancements
 
-### 🎯 Guess Indent (`editor.lua`)
+### Guess Indent (`editor.lua`)
 **Plugin:** `NMAC427/guess-indent.nvim`
 
 Automatically detects and sets indentation (tabs vs spaces, indent width) based on file content.
@@ -100,7 +100,7 @@ Automatically closes brackets, quotes, and other paired characters.
 
 ---
 
-### 📐 Indent Guides (`indent_line.lua`)
+### Indent Guides (`indent_line.lua`)
 **Plugin:** `lukas-reineke/indent-blankline.nvim`
 
 Shows vertical lines for indentation levels, making code structure easier to see.
@@ -109,7 +109,7 @@ Shows vertical lines for indentation levels, making code structure easier to see
 
 ## UI & Visual
 
-### 🎨 Which-Key (`ui.lua`)
+### Which-Key (`ui.lua`)
 **Plugin:** `folke/which-key.nvim`
 
 Shows popup with available keybindings when you pause while typing a command.
@@ -120,21 +120,21 @@ Shows popup with available keybindings when you pause while typing a command.
 
 ---
 
-### 🌙 Tokyo Night Theme (`ui.lua`)
+### Tokyo Night Theme (`ui.lua`)
 **Plugin:** `folke/tokyonight.nvim`
 
 Dark colorscheme with the "tokyonight-night" variant active.
 
 ---
 
-### 💬 Todo Comments (`ui.lua`)
+### Todo Comments (`ui.lua`)
 **Plugin:** `folke/todo-comments.nvim`
 
 Highlights TODO, FIXME, NOTE, HACK, WARNING, and similar comments in your code.
 
 ---
 
-### 🎯 Mini Plugins (`ui.lua`)
+### Mini Plugins (`ui.lua`)
 **Plugin:** `nvim-mini/mini.nvim`
 
 Collection of small, independent plugins:
@@ -153,7 +153,7 @@ Collection of small, independent plugins:
 
 ---
 
-### 📁 Neo-Tree (`neo-tree.lua`)
+### Neo-Tree (`neo-tree.lua`)
 **Plugin:** `nvim-neo-tree/neo-tree.nvim`
 
 File explorer sidebar for browsing and managing files.
@@ -165,7 +165,7 @@ File explorer sidebar for browsing and managing files.
 
 ## Version Control
 
-### 📊 Git Signs (`gitsigns.lua`)
+### Git Signs (`gitsigns.lua`)
 **Plugin:** `lewis6991/gitsigns.nvim`
 
 Git integration showing changes in the gutter and providing git operations.
@@ -197,7 +197,7 @@ Git integration showing changes in the gutter and providing git operations.
 
 ## Code Quality
 
-### 🔍 Linting (`lint.lua`)
+### Linting (`lint.lua`)
 **Plugin:** `mfussenegger/nvim-lint`
 
 Provides linting support beyond what LSP offers.
@@ -213,7 +213,7 @@ Provides linting support beyond what LSP offers.
 
 ## Debugging
 
-### 🐛 DAP Debugger (`debug.lua`)
+### DAP Debugger (`debug.lua`)
 **Plugins:** `mfussenegger/nvim-dap` + `rcarriga/nvim-dap-ui`
 
 Debug Adapter Protocol for debugging code (primarily configured for Go).
