@@ -2,6 +2,7 @@
 require 'custom.core.options'
 require 'custom.core.keymaps'
 require 'custom.core.autocmds'
+require 'custom.plugins.floaterminal'
 
 
 -- [[ Install `lazy.nvim` plugin manager ]]
@@ -38,11 +39,6 @@ require('lazy').setup({
   require 'kickstart.plugins.autopairs',
   require 'kickstart.plugins.neo-tree',
   require 'kickstart.plugins.gitsigns',
-
-  --  !!! Consider removing the custom.plugins, because it is not used in this configuration,
-  --      and it is not necessary to have a separate file for plugins if you are only using a few plugins.
-  --      You can simply add your plugins directly to the `require('lazy').setup()` function.
-  { import = 'custom.plugins' },
 
 }, {
   ui = {
