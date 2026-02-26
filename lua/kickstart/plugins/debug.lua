@@ -1,11 +1,6 @@
 -- debug.lua
 --
 -- Shows how to use the DAP plugin to debug your code.
---
--- Primarily focused on configuring the debugger for Go, but can
--- be extended to other languages as well. That's why it's called
--- kickstart.nvim and not kitchen-sink.nvim ;)
-
 return {
   -- NOTE: Yes, you can install new plugins here!
   'mfussenegger/nvim-dap',
@@ -21,8 +16,8 @@ return {
     'mason-org/mason.nvim',
     'jay-babu/mason-nvim-dap.nvim',
 
-    -- Add your own debuggers here
-    'leoluz/nvim-dap-go',
+    -- Language-specific debugger plugins
+    'mfussenegger/nvim-dap-python',
   },
   keys = {
     -- Basic debugging keymaps, feel free to change to your liking!
@@ -80,7 +75,8 @@ return {
       -- online, please don't ask me how to install them :)
       ensure_installed = {
         -- Update this to ensure that you have the debuggers for the langs you want
-        'delve',
+        -- Note: debugpy is not installed via Mason - it comes from your project's .venv (uv)
+        'codelldb',  -- Rust/C/C++ debugger
       },
     }
 
@@ -122,12 +118,52 @@ return {
     dap.listeners.before.event_terminated['dapui_config'] = dapui.close
     dap.listeners.before.event_exited['dapui_config'] = dapui.close
 
-    -- Install golang specific config
-    require('dap-go').setup {
-      delve = {
-        -- On Windows delve must be run attached or it crashes.
-        -- See https://github.com/leoluz/nvim-dap-go/blob/main/README.md#configuring
-        detached = vim.fn.has 'win32' == 0,
+    -- Python debugger setup (uv/.venv first, fallback to system python)
+    local function get_python_path()
+      local cwd = vim.fn.getcwd()
+
+      -- uv typically creates .venv in the project root
+      if vim.fn.has('win32') == 1 then
+        local win_venv = cwd .. '\\.venv\\Scripts\\python.exe'
+        if vim.fn.executable(win_venv) == 1 then
+          return win_venv
+        end
+      else
+        local venv = cwd .. '/.venv/bin/python'
+        if vim.fn.executable(venv) == 1 then
+          return venv
+        end
+      end
+
+      -- fallback
+      local py = vim.fn.exepath('python3')
+      if py == '' then py = vim.fn.exepath('python') end
+      if py == '' then py = 'python' end
+      return py
+    end
+
+    require('dap-python').setup(get_python_path())
+
+    -- Rust debugger setup (codelldb)
+    dap.adapters.codelldb = {
+      type = 'server',
+      port = '${port}',
+      executable = {
+        command = vim.fn.stdpath 'data' .. '/mason/bin/codelldb',
+        args = { '--port', '${port}' },
+      },
+    }
+
+    dap.configurations.rust = {
+      {
+        name = 'Launch',
+        type = 'codelldb',
+        request = 'launch',
+        program = function()
+          return vim.fn.input('Path to executable: ', vim.fn.getcwd() .. '/target/debug/', 'file')
+        end,
+        cwd = '${workspaceFolder}',
+        stopOnEntry = false,
       },
     }
   end,
