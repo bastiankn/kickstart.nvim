@@ -100,6 +100,28 @@ return {
           disconnect = '⏏',
         },
       },
+      -- Layout configuration (VS Code style)
+      layouts = {
+        {
+          -- Left sidebar: stacks, variables, watches, breakpoints (like VS Code)
+          elements = {
+            { id = 'stacks', size = 0.25 },      -- 25% for call stack
+            { id = 'scopes', size = 0.40 },      -- 40% for variables/locals (main focus)
+            { id = 'watches', size = 0.15 },     -- 15% for watch expressions
+            { id = 'breakpoints', size = 0.20 }, -- 20% for breakpoints list
+          },
+          size = 50,  -- 50 columns wide
+          position = 'left',
+        },
+        {
+          -- Bottom panel: debug console only (like VS Code)
+          elements = {
+            { id = 'repl', size = 1.0 },  -- 100% for debug console/REPL
+          },
+          size = 12,  -- 12 lines tall
+          position = 'bottom',
+        },
+      },
     }
 
     -- Change breakpoint icons
@@ -160,7 +182,7 @@ return {
         type = 'codelldb',
         request = 'launch',
         program = function()
-          return vim.fn.input('Path to executable: ', vim.fn.getcwd() .. '/target/debug/', 'file')
+          return vim.fn.input('Path to executable: ', vim.fn.getcwd() .. '/', 'file')
         end,
         cwd = '${workspaceFolder}',
         stopOnEntry = false,
